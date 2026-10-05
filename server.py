@@ -1,4 +1,5 @@
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from e2b_code_interpreter import Sandbox
 import os
 
@@ -15,6 +16,10 @@ def run_code(code: str) -> str:
 
 if __name__ == "__main__":
     import uvicorn
-    app = mcp.streamable_http_app()
+    security = TransportSecuritySettings(
+        allowed_hosts=["*"],
+        allowed_origins=["*"],
+    )
+    app = mcp.streamable_http_app(transport_security=security)
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
