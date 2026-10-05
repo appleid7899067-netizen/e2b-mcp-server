@@ -1,5 +1,6 @@
 from mcp.server.fastmcp import FastMCP
 from e2b_code_interpreter import Sandbox
+import os
 
 mcp = FastMCP("E2B Runner")
 
@@ -11,9 +12,9 @@ def run_code(code: str) -> str:
         stdout = "".join(execution.logs.stdout or [])
         stderr = "".join(execution.logs.stderr or [])
         return f"STDOUT:\n{stdout}\nSTDERR:\n{stderr}"
+
 if __name__ == "__main__":
-    import os
+    import uvicorn
+    app = mcp.streamable_http_app()
     port = int(os.environ.get("PORT", 10000))
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=port)
-if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    uvicorn.run(app, host="0.0.0.0", port=port)
