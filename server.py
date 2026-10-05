@@ -3,7 +3,12 @@ from mcp.server.transport_security import TransportSecuritySettings
 from e2b_code_interpreter import Sandbox
 import os
 
-mcp = FastMCP("E2B Runner")
+mcp = FastMCP(
+    "E2B Runner",
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=False,
+    ),
+)
 
 @mcp.tool()
 def run_code(code: str) -> str:
@@ -16,10 +21,6 @@ def run_code(code: str) -> str:
 
 if __name__ == "__main__":
     import uvicorn
-    security = TransportSecuritySettings(
-        allowed_hosts=["*"],
-        allowed_origins=["*"],
-    )
-    app = mcp.streamable_http_app(transport_security=security)
+    app = mcp.streamable_http_app()
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
