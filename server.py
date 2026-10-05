@@ -11,6 +11,9 @@ def run_code(code: str) -> str:
         stdout = "".join(execution.logs.stdout or [])
         stderr = "".join(execution.logs.stderr or [])
         return f"STDOUT:\n{stdout}\nSTDERR:\n{stderr}"
-
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    mcp.run(transport="streamable-http", host="0.0.0.0", port=port)
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")
