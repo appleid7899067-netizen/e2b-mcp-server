@@ -1,2 +1,2 @@
-mcp
+mcp<2
 e2b-code-interpreter
