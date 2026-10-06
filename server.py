@@ -56,6 +56,13 @@ def list_files(path: str = "/home/user") -> str:
 
 if __name__ == "__main__":
     import uvicorn
+    from starlette.responses import JSONResponse
+
     app = mcp.streamable_http_app()
+
+    @app.get("/health")
+    async def health():
+        return JSONResponse({"status": "ok", "service": "e2b-mcp-server"})
+
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
